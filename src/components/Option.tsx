@@ -1,5 +1,6 @@
 import { Flex } from '@radix-ui/themes';
 import { motion } from 'framer-motion';
+import { CORRECT_POINT_ANIMATE } from '../consts';
 
 interface OptionProps {
 	value: string;
@@ -15,6 +16,7 @@ const Option: React.FC<OptionProps> = ({
 	questionKey,
 }) => {
 	const isCorrect = value === selected && selected === questionKey;
+	const isWrong = value === selected && selected !== questionKey;
 	return (
 		<Flex
 			align='center'
@@ -25,13 +27,13 @@ const Option: React.FC<OptionProps> = ({
 		>
 			{value}
 			{isCorrect && (
-				<motion.div
-					className='point-add'
-					initial={{ opacity: 1, y: 0 }}
-					animate={{ opacity: 0, y: -10 }}
-					transition={{ duration: 1 }}
-				>
+				<motion.div {...CORRECT_POINT_ANIMATE} className='point-add'>
 					+10
+				</motion.div>
+			)}
+			{isWrong && (
+				<motion.div {...CORRECT_POINT_ANIMATE} className='point-sub'>
+					-5
 				</motion.div>
 			)}
 		</Flex>

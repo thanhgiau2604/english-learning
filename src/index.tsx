@@ -5,15 +5,18 @@ import '@radix-ui/themes/styles.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Theme } from '@radix-ui/themes';
+import { RecoilRoot } from 'recoil';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
 root.render(
 	<React.StrictMode>
-		<Theme>
-			<App />
-		</Theme>
+		<RecoilRoot>
+			<Theme>
+				<App />
+			</Theme>
+		</RecoilRoot>
 	</React.StrictMode>
 );
 

@@ -1,13 +1,33 @@
 import { Flex } from '@radix-ui/themes';
 import { useRecoilValue } from 'recoil';
 import { scoreState } from '../atoms/app';
+import { CORRECT_POINT_ANIMATE } from '../consts';
+import { motion } from 'framer-motion';
+import { QuestionItem } from '../interface';
 
 interface QuestionContentProps {
-	value: string;
+	question: QuestionItem;
+	isCorrect?: boolean;
 }
 
-const QuestionContent: React.FC<QuestionContentProps> = ({ value }) => {
+const QuestionContent: React.FC<QuestionContentProps> = ({
+	question,
+	isCorrect,
+}) => {
 	const score = useRecoilValue(scoreState);
+
+	const renderScoreResult = (): JSX.Element => {
+		if (isCorrect === undefined) return <></>;
+
+		return (
+			<motion.div
+				{...CORRECT_POINT_ANIMATE}
+				className={`score ${isCorrect ? 'score-correct' : 'score-wrong'}`}
+			>
+				{isCorrect ? `+10` : `+0`}
+			</motion.div>
+		);
+	};
 
 	return (
 		<Flex
@@ -19,10 +39,10 @@ const QuestionContent: React.FC<QuestionContentProps> = ({ value }) => {
 			className='question'
 			position='relative'
 		>
-			{value}
+			{question.content}
 			<Flex
 				position='absolute'
-				className='score'
+				className='total-score'
 				align='center'
 				justify='center'
 				direction='column'
@@ -31,6 +51,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({ value }) => {
 				<p>Score</p>
 				{score}
 			</Flex>
+			{renderScoreResult()}
 		</Flex>
 	);
 };

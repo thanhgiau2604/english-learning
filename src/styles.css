@@ -74,21 +74,24 @@ body {
 	height: 0;
 }
 
-.point-add {
+.score {
 	position: absolute;
-	right: -30px;
+	right: -85px;
+}
+
+.score-correct {
+	position: absolute;
 	color: green;
 	font-size: 16px;
 }
 
-.point-sub {
+.score-wrong {
 	position: absolute;
-	right: -30px;
 	color: red;
 	font-size: 16px;
 }
 
-.score {
+.total-score {
 	font-weight: 700;
 	font-size: 18px;
 	right: -100px;

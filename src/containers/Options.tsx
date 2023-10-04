@@ -5,7 +5,7 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface OptionsProps {
-	values: string[];
+	values?: string[];
 	questionKey: string;
 }
 
@@ -27,7 +27,7 @@ const Options: React.FC<OptionsProps> = ({ values, questionKey }) => {
 				wrap='wrap'
 				style={{ rowGap: '20px', columnGap: '50px' }}
 			>
-				{values.map((val, index) => {
+				{values?.map((val, index) => {
 					return (
 						<React.Fragment key={val}>
 							{!!index && index % 2 === 0 && <div className='break'></div>}

@@ -1,23 +1,37 @@
-import { Box, Container } from '@radix-ui/themes';
-import Question from '../components/Question';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentIndexState, questionState } from '../atoms/app';
-import { useEffect } from 'react';
-import { shuffle } from '../utils';
+import { Box, Button } from '@radix-ui/themes';
+import Settings from '../components/Settings';
+import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { settingState } from '../atoms/app';
 
 const Home = () => {
-	const [questions, setQuestions] = useRecoilState(questionState);
-	const index = useRecoilValue(currentIndexState);
+	const navigate = useNavigate();
+	const [setting, setSetting] = useRecoilState(settingState);
 
-	useEffect(() => {
-		setQuestions(shuffle([...questions]));
-	}, []);
+	const handleStart = () => {
+		setSetting({ ...setting, already: true });
+		navigate('/quiz');
+	};
 
 	return (
-		<Box className='center-scr' mt='-7'>
-			<Container py='3' px='5' position='relative'>
-				<Question data={questions[index]} />
-			</Container>
+		<Box>
+			<Settings />
+			<Box
+				position='fixed'
+				bottom='0'
+				height='9'
+				width='100%'
+				className='home-footer'
+			>
+				<Button
+					color='cyan'
+					variant='soft'
+					className='button-start'
+					onClick={handleStart}
+				>
+					Start
+				</Button>
+			</Box>
 		</Box>
 	);
 };

@@ -30,28 +30,22 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 	};
 
 	return (
-		<Flex
-			py='2'
-			px='3'
-			mx='auto'
-			align='center'
-			justify='center'
-			className='question'
-			position='relative'
-		>
-			{question.content}
+		<Flex gap='4' align='center' justify='center' py='2' px='3'>
+			<Flex align='center' justify='center' className='question'>
+				{question.content}
+			</Flex>
 			<Flex
-				position='absolute'
 				className='total-score'
 				align='center'
 				justify='center'
 				direction='column'
 				gap='1'
+				position='relative'
 			>
 				<p>Score</p>
-				{score}
+				<p>{score}</p>
+				{renderScoreResult()}
 			</Flex>
-			{renderScoreResult()}
 		</Flex>
 	);
 };

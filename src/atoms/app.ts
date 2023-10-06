@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { QuestionList } from '../interface';
+import { QuestionList, Setting } from '../interface';
 
 export const scoreState = atom({
 	key: 'score',
@@ -35,4 +35,12 @@ const questionList: QuestionList = [
 export const questionState = atom({
 	key: 'question_list',
 	default: questionList,
+});
+
+export const settingState = atom<Setting>({
+	key: 'settings',
+	default: {
+		timer: undefined,
+		already: false,
+	},
 });

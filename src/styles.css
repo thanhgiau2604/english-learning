@@ -27,8 +27,8 @@ button {
 	outline: none;
 	border: 0;
 }
+
 body {
-	min-height: 100vh;
 	font-weight: 400;
 	font-size: 16px;
 	line-height: 1;
@@ -76,26 +76,37 @@ body {
 
 .score {
 	position: absolute;
-	right: -85px;
+	right: 13px;
+	text-shadow: none;
 }
 
 .score-correct {
-	position: absolute;
 	color: green;
 	font-size: 16px;
 }
 
 .score-wrong {
-	position: absolute;
 	color: red;
 	font-size: 16px;
 }
 
-.total-score {
+.total-score p {
 	font-weight: 700;
 	font-size: 18px;
-	right: -100px;
 	color: white;
 	-webkit-text-stroke: 1px #f8f8f8;
 	text-shadow: 1px 2px 4px blue;
+}
+
+.home-footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+		rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.button-start {
+	width: 150px;
+	height: 40px;
 }

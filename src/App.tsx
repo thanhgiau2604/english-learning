@@ -1,6 +1,24 @@
 import './styles.css';
-import Home from './pages/Home';
+import HomePage from './pages/home';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import QuizPage from './pages/quiz';
+import CompletePage from './pages/complete';
 
 export default function App() {
-	return <Home />;
+	const router = createBrowserRouter([
+		{
+			path: '/',
+			element: <HomePage />,
+		},
+		{
+			path: 'quiz',
+			element: <QuizPage />,
+		},
+		{
+			path: 'complete',
+			element: <CompletePage />,
+		},
+	]);
+
+	return <RouterProvider router={router} />;
 }

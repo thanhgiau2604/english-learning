@@ -5,3 +5,8 @@ export interface QuestionItem {
 }
 
 export type QuestionList = QuestionItem[];
+
+export interface Setting {
+	timer?: number;
+	already: boolean;
+}

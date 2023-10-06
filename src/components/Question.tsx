@@ -13,6 +13,7 @@ import { QuestionItem } from '../interface';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentIndexState, questionState, scoreState } from '../atoms/app';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -24,6 +25,7 @@ export interface FormValues {
 }
 
 const Question: React.FC<QuestionProps> = ({ data }) => {
+	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
 	const [isCorrect, setCorrect] = useState<boolean>();
@@ -43,7 +45,9 @@ const Question: React.FC<QuestionProps> = ({ data }) => {
 
 		setTimeout(() => {
 			if (index < questions.length - 1) setIndex(index + 1);
-			else alert('Done');
+			else {
+				navigate('/complete');
+			}
 			method.reset();
 			setCorrect(undefined);
 		}, 1000);

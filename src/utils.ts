@@ -17,3 +17,10 @@ export function shuffle<T>(array: Array<T>): Array<T> {
 
 	return array;
 }
+
+export const convertTimeStr = (time: number): string => {
+	const seconds = time % 60 < 10 ? `0${time % 60}` : `${time % 60}`;
+	const truncMinutes = Math.trunc(time / 60);
+	const minutes = truncMinutes < 10 ? `0${truncMinutes}` : `${truncMinutes}`;
+	return `${minutes}:${seconds}`;
+};

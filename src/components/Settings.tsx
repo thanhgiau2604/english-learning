@@ -20,7 +20,7 @@ const Settings = () => {
 	};
 
 	return (
-		<Box mx='5' mt='4'>
+		<Box px='5' pt='4'>
 			<Text size='4'>
 				<Strong>Settings:</Strong>
 			</Text>

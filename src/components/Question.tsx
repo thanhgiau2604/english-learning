@@ -7,16 +7,18 @@ import {
 	Form,
 	FormProvider,
 	FormSubmitHandler,
+	Resolver,
 	useForm,
 } from 'react-hook-form';
 import { QuestionItem } from '../interface';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentIndexState, questionState, scoreState } from '../atoms/app';
+import { useRecoilState } from 'recoil';
+import { currentIndexState, scoreState } from '../atoms/app';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface QuestionProps {
 	data: QuestionItem;
+	questionNum: number;
 }
 
 export interface FormValues {
@@ -24,17 +26,30 @@ export interface FormValues {
 	answer: string;
 }
 
-const Question: React.FC<QuestionProps> = ({ data }) => {
+const resolver: Resolver<FormValues> = async values => {
+	return {
+		values,
+		errors:
+			!values.answer && !values.selected
+				? {
+						answer: {
+							type: 'required',
+							message: 'This is required.',
+						},
+				  }
+				: {},
+	};
+};
+
+const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
 	const [isCorrect, setCorrect] = useState<boolean>();
 
-	const questions = useRecoilValue(questionState);
-	const method = useForm<FormValues>();
+	const method = useForm<FormValues>({ resolver });
 
 	const onSubmit: FormSubmitHandler<FormValues> = submit => {
-		console.log(submit.data);
 		const answer = submit.data.selected || submit.data.answer;
 		const isCorrect = answer.trim() === data.key;
 		setCorrect(isCorrect);
@@ -44,7 +59,7 @@ const Question: React.FC<QuestionProps> = ({ data }) => {
 		}, 500);
 
 		setTimeout(() => {
-			if (index < questions.length - 1) setIndex(index + 1);
+			if (index < questionNum - 1) setIndex(index + 1);
 			else {
 				navigate('/complete');
 			}
@@ -53,7 +68,7 @@ const Question: React.FC<QuestionProps> = ({ data }) => {
 		}, 1000);
 	};
 
-	const questionType = data.options?.length ? 'quiz' : 'text';
+	const questionType = data?.options?.length ? 'quiz' : 'text';
 
 	return (
 		<FormProvider {...method}>

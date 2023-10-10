@@ -32,7 +32,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 	return (
 		<Flex gap='4' align='center' justify='center' py='2' px='3'>
 			<Flex align='center' justify='center' className='question'>
-				{question.content}
+				{question?.content}
 			</Flex>
 			<Flex
 				className='total-score'

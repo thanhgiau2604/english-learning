@@ -1,6 +1,5 @@
 import { Box, Flex } from '@radix-ui/themes';
 import Option from '../components/Option';
-import { useState } from 'react';
 import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
@@ -10,12 +9,12 @@ interface OptionsProps {
 }
 
 const Options: React.FC<OptionsProps> = ({ values, questionKey }) => {
-	const { setValue, getValues, watch } = useFormContext();
+	const { setValue, getValues, watch, trigger } = useFormContext();
 	if (values?.length !== 4) return <></>;
 
 	const handleSelect = (option: string) => {
-		console.log('Vào');
 		setValue('selected', option);
+		trigger();
 	};
 
 	watch('selected');
@@ -29,7 +28,7 @@ const Options: React.FC<OptionsProps> = ({ values, questionKey }) => {
 			>
 				{values?.map((val, index) => {
 					return (
-						<React.Fragment key={val}>
+						<React.Fragment key={val + index.toString()}>
 							{!!index && index % 2 === 0 && <div className='break'></div>}
 							<Option
 								selected={getValues('selected')}

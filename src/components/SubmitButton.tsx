@@ -1,8 +1,8 @@
-import { IconButton } from '@radix-ui/themes';
+import { Button } from '@radix-ui/themes';
 
 const SubmitButton = () => {
 	return (
-		<IconButton size='3' variant='soft' color='grass' type='submit'>
+		<Button variant='soft' color='grass' type='submit' size='3' mt='4'>
 			<svg
 				width='15'
 				height='15'
@@ -17,7 +17,8 @@ const SubmitButton = () => {
 					clipRule='evenodd'
 				/>
 			</svg>
-		</IconButton>
+			Submit
+		</Button>
 	);
 };
 

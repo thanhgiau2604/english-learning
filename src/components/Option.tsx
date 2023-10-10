@@ -1,4 +1,6 @@
 import { Flex } from '@radix-ui/themes';
+import classNames from 'classnames';
+import { useFormContext } from 'react-hook-form';
 
 interface OptionProps {
 	value: string;
@@ -12,11 +14,22 @@ const Option: React.FC<OptionProps> = ({
 	selected,
 	handleSelect,
 }) => {
+	const {
+		formState: { errors },
+	} = useFormContext();
+
+	const cls = classNames({
+		'option-item': true,
+		selected: selected === value,
+		'no-select': selected !== value,
+		error: !!errors.answer,
+	});
+
 	return (
 		<Flex
 			align='center'
 			justify='center'
-			className={`option-item ${selected === value ? 'selected' : 'no-select'}`}
+			className={cls}
 			onClick={() => handleSelect(value)}
 			position='relative'
 		>

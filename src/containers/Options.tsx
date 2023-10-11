@@ -15,7 +15,7 @@ const Options: React.FC<OptionsProps> = ({
 	isCorrect,
 }) => {
 	const { setValue, getValues, watch, trigger } = useFormContext();
-	if (values?.length !== 4) return <></>;
+	if (!values?.length) return <></>;
 
 	const handleSelect = (option: string) => {
 		setValue('selected', option);
@@ -26,15 +26,10 @@ const Options: React.FC<OptionsProps> = ({
 
 	return (
 		<Box mt='8' mx='2'>
-			<Flex
-				justify='center'
-				wrap='wrap'
-				style={{ rowGap: '20px', columnGap: '50px' }}
-			>
+			<Flex justify='center' wrap='wrap' gap='5'>
 				{values?.map((val, index) => {
 					return (
 						<React.Fragment key={val + index.toString()}>
-							{!!index && index % 2 === 0 && <div className='break'></div>}
 							<Option
 								selected={getValues('selected')}
 								value={val}

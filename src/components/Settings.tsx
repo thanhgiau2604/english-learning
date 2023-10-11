@@ -1,4 +1,4 @@
-import { Box, Strong, Text, TextField, Flex } from '@radix-ui/themes';
+import { Box, Strong, Text, TextField, Flex, Switch } from '@radix-ui/themes';
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { settingState } from '../atoms/app';
@@ -20,6 +20,10 @@ const Settings = () => {
 		setQNum(Number(e.target.value));
 	};
 
+	const handleChangeAutoplay = (isChecked: boolean) => {
+		setSetting({ ...setting, autoplay: isChecked });
+	};
+
 	useEffect(() => {
 		setSetting({ ...setting, timer: timerValue });
 	}, [timerValue]);
@@ -33,8 +37,8 @@ const Settings = () => {
 			<Text size='4'>
 				<Strong>Settings:</Strong>
 			</Text>
-			<Box mt='3'>
-				<Box className='time-complete'>
+			<Box className='setting-main'>
+				<Box className='time-complete' mt='4'>
 					<Text size='3'>Time to complete (empty = unlimited):</Text>
 					<Flex gap='3' align='center'>
 						<TextField.Root
@@ -70,6 +74,18 @@ const Settings = () => {
 						</TextField.Root>
 						<span>questions</span>
 					</Flex>
+				</Box>
+				<Box className='autoplay' mt='4'>
+					<Text as='div' size='2'>
+						<Flex gap='2'>
+							<Switch
+								radius='full'
+								onCheckedChange={handleChangeAutoplay}
+								defaultChecked
+							/>
+							Autoplay
+						</Flex>
+					</Text>
 				</Box>
 			</Box>
 		</Box>

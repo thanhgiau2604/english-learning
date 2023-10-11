@@ -28,5 +28,6 @@ export const settingState = atom<Setting>({
 		already: false,
 		selectedCategory: undefined,
 		questionNum: undefined,
+		autoplay: true,
 	},
 });

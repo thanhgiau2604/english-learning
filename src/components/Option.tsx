@@ -21,11 +21,19 @@ const Option: React.FC<OptionProps> = ({
 		formState: { errors },
 	} = useFormContext();
 
+	/*
+	 * Explain: `isCorrect` state
+	 * - undefined: not answer yet
+	 * - true: selected option is correct
+	 * - false: selected option is wrong
+	 */
+
 	const cls = classNames({
 		'option-item': true,
 		selected:
-			(isCorrect === undefined && selected === value) ||
-			(isCorrect === false && value === questionKey),
+			(isCorrect === undefined && selected === value) || // case1: select option → no submit
+			(isCorrect === false && value === questionKey) || // case2: select wrong → submitted (show correct answer)
+			(isCorrect === true && value === selected && selected === questionKey), //case3: select correct → submitted
 		'selected-wrong': isCorrect === false && selected === value,
 		'no-select': isCorrect === undefined && selected !== value,
 		error: !!errors.answer,

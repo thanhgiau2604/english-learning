@@ -79,7 +79,7 @@ const Home = () => {
 					<Button
 						color='green'
 						variant='soft'
-						className='button-start'
+						className='button'
 						onClick={handleStart}
 						disabled={!setting.selectedCategory}
 					>

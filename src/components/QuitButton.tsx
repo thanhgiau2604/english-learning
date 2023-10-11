@@ -5,7 +5,7 @@ import { APP_ROUTES } from '../consts';
 const QuitButton = () => {
 	const navigate = useNavigate();
 	return (
-		<Box style={{ textAlign: 'center' }} mt='4' width='100%'>
+		<Box className='quit-button'>
 			<Button
 				variant='soft'
 				color='red'

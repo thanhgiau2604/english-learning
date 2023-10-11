@@ -17,6 +17,7 @@ export interface Setting {
 	timer?: number;
 	selectedCategory?: string;
 	questionNum?: number;
+	autoplay: boolean;
 }
 
 export interface CategoryItem {

@@ -1,8 +1,21 @@
 import { Button } from '@radix-ui/themes';
+import { useFormContext } from 'react-hook-form';
+import { FormValues } from './Question';
 
-const SubmitButton = () => {
+interface Props {
+	isSubmitted: boolean;
+}
+
+const SubmitButton = ({ isSubmitted }: Props) => {
 	return (
-		<Button variant='soft' color='grass' type='submit' size='3' mt='4'>
+		<Button
+			variant='soft'
+			color='grass'
+			type='submit'
+			mt='4'
+			className='button'
+			disabled={isSubmitted}
+		>
 			<svg
 				width='15'
 				height='15'

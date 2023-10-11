@@ -8,6 +8,7 @@ import Timer from '../components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { QuestionItem } from '../interface';
 import { APP_ROUTES } from '../consts';
+import QuitButton from '../components/QuitButton';
 
 const QuizPage = () => {
 	const [questions, setQuestions] = useState<QuestionItem[]>([]);
@@ -51,10 +52,11 @@ const QuizPage = () => {
 
 	return (
 		<Box className='center-scr'>
-			<Container py='3' px='5' position='relative'>
+			<Box py='5' px='5' position='relative' className='quiz-container'>
 				<Timer seconds={seconds} />
 				<Question data={questions[index]} questionNum={questions.length} />
-			</Container>
+				<QuitButton />
+			</Box>
 		</Box>
 	);
 };

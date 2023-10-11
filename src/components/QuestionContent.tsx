@@ -1,4 +1,4 @@
-import { Flex } from '@radix-ui/themes';
+import { Em, Flex } from '@radix-ui/themes';
 import { useRecoilValue } from 'recoil';
 import { scoreState } from '../atoms/app';
 import { CORRECT_POINT_ANIMATE } from '../consts';
@@ -29,15 +29,12 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 		);
 	};
 
-	let moreInfo = question?.part_of_speech
-		? `(${question?.part_of_speech})`
-		: '';
-	moreInfo += question?.pronounciation || '';
-
 	return (
-		<Flex gap='4' align='center' justify='center' py='2' px='3'>
+		<Flex gap='4' align='center' justify='center' py='2' px='3' wrap='wrap'>
 			<Flex align='center' justify='center' className='question'>
-				{`${question?.content} ${moreInfo}`}
+				{`${question?.content}`}
+				{question?.part_of_speech && <Em>({question?.part_of_speech})</Em>}
+				{question?.pronounciation && <Em>{question?.pronounciation}</Em>}
 			</Flex>
 			<Flex
 				className='total-score'

@@ -1,4 +1,4 @@
-import { Badge, Box } from '@radix-ui/themes';
+import { Box } from '@radix-ui/themes';
 import QuestionContent from './QuestionContent';
 import Options from '../containers/Options';
 import InputAnswer from './InputAnswer';
@@ -11,14 +11,15 @@ import {
 	useForm,
 } from 'react-hook-form';
 import { QuestionItem } from '../interface';
-import { useRecoilState } from 'recoil';
-import { currentIndexState, scoreState } from '../atoms/app';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { currentIndexState, scoreState, settingState } from '../atoms/app';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import QuitButton from './QuitButton';
 import QuestionMoreInfo from './MoreInfo';
-import { LayoutGroup, motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { wait } from '../utils';
+import NextButton from './NextButton';
+import { APP_ROUTES } from '../consts';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -49,9 +50,24 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
+	const { autoplay } = useRecoilValue(settingState);
 	const [isCorrect, setCorrect] = useState<boolean>();
 
 	const method = useForm<FormValues>({ resolver });
+
+	const resetQuestion = () => {
+		setCorrect(undefined);
+		method.reset();
+	};
+
+	const nextQuestion = async () => {
+		resetQuestion();
+		await wait(300);
+		if (index < questionNum - 1) setIndex(index + 1);
+		else {
+			navigate(APP_ROUTES.complete);
+		}
+	};
 
 	const onSubmit: FormSubmitHandler<FormValues> = async submit => {
 		const answer = submit.data.selected || submit.data.answer;
@@ -61,44 +77,47 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 		await wait(500);
 		setTotalScore(isCorrect ? totalScore + 10 : totalScore);
 
-		// await wait(5000);
-		// if (index < questionNum - 1) setIndex(index + 1);
-		// else {
-		// 	navigate(APP_ROUTES.complete);
-		// }
-		// method.reset();
-		// setCorrect(undefined);
+		if (autoplay) {
+			await wait(400);
+			resetQuestion();
+			await wait(300);
+			nextQuestion();
+		}
 	};
 
+	const isSubmitted = isCorrect !== undefined || method.formState.isSubmitting;
 	const questionType = data?.options?.length ? 'quiz' : 'text';
+
 	return (
-		<LayoutGroup>
-			<motion.div layout>
-				<FormProvider {...method}>
-					<Form onSubmit={onSubmit}>
-						<Box>
-							<QuestionContent question={data} isCorrect={isCorrect} />
-							{questionType === 'quiz' ? (
-								<Options
-									values={data.options}
-									questionKey={data.key}
-									isCorrect={isCorrect}
-								/>
-							) : (
-								<InputAnswer />
-							)}
-							<Box style={{ textAlign: 'center' }} mt='4'>
-								<SubmitButton />
+		<AnimatePresence>
+			<LayoutGroup>
+				<motion.div layout='position' exit={{ opacity: 0 }}>
+					<FormProvider {...method}>
+						<Form onSubmit={onSubmit}>
+							<Box>
+								<QuestionContent question={data} isCorrect={isCorrect} />
+								{questionType === 'quiz' ? (
+									<Options
+										values={data.options}
+										questionKey={data.key}
+										isCorrect={isCorrect}
+									/>
+								) : (
+									<InputAnswer />
+								)}
+								<Box style={{ textAlign: 'center' }} mt='4'>
+									<SubmitButton isSubmitted={isSubmitted} />
+									{!autoplay && <NextButton handleClick={nextQuestion} />}
+								</Box>
 							</Box>
-						</Box>
-					</Form>
-					<QuitButton />
-				</FormProvider>
-			</motion.div>
-			<motion.div layout>
-				<QuestionMoreInfo isDisplay={isCorrect} questionData={data} />
-			</motion.div>
-		</LayoutGroup>
+						</Form>
+					</FormProvider>
+				</motion.div>
+				<motion.div layout='position'>
+					<QuestionMoreInfo isDisplay={isCorrect} questionData={data} />
+				</motion.div>
+			</LayoutGroup>
+		</AnimatePresence>
 	);
 };
 

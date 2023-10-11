@@ -21,13 +21,17 @@ const QuestionMoreInfo = ({
 		<motion.div className='question-more-info'>
 			{questionData?.example && (
 				<Box mt='3'>
-					<Badge color='orange'>Example</Badge>
+					<Badge color='orange' style={{ fontSize: '13px' }}>
+						Example
+					</Badge>
 					<Box mt='1'>{questionData.example}</Box>
 				</Box>
 			)}
 			{questionData?.explanation && (
 				<Box mt='3'>
-					<Badge color='blue'>Explanation</Badge>
+					<Badge color='blue' style={{ fontSize: '13px' }}>
+						Explanation
+					</Badge>
 					<Box mt='1'>{questionData.explanation}</Box>
 				</Box>
 			)}

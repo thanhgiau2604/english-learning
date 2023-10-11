@@ -69,6 +69,11 @@ body {
 	color: white;
 }
 
+.option-item.selected-wrong {
+	background-color: #f58b8b;
+	color: white;
+}
+
 .option-item.no-select:hover {
 	background-color: rgba(2, 179, 2, 0.079);
 	color: rgba(0, 99, 22, 0.84);
@@ -148,4 +153,9 @@ body {
 	font-size: 18px;
 	font-weight: 700;
 	text-align: center;
+}
+
+.question-more-info {
+	margin-top: 10px;
+	padding: 0 20px;
 }

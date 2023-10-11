@@ -1,5 +1,4 @@
 import { Flex, TextField } from '@radix-ui/themes';
-import SubmitButton from './SubmitButton';
 import { useFormContext } from 'react-hook-form';
 
 const InputAnswer = () => {
@@ -17,7 +16,6 @@ const InputAnswer = () => {
 					{...register('answer')}
 				/>
 			</TextField.Root>
-			<SubmitButton />
 		</Flex>
 	);
 };

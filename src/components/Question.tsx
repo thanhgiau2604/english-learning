@@ -1,4 +1,4 @@
-import { Box } from '@radix-ui/themes';
+import { Badge, Box } from '@radix-ui/themes';
 import QuestionContent from './QuestionContent';
 import Options from '../containers/Options';
 import InputAnswer from './InputAnswer';
@@ -15,8 +15,10 @@ import { useRecoilState } from 'recoil';
 import { currentIndexState, scoreState } from '../atoms/app';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { APP_ROUTES } from '../consts';
-import { wait } from '@testing-library/user-event/dist/utils';
+import QuitButton from './QuitButton';
+import QuestionMoreInfo from './MoreInfo';
+import { LayoutGroup, motion } from 'framer-motion';
+import { wait } from '../utils';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -59,35 +61,44 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 		await wait(500);
 		setTotalScore(isCorrect ? totalScore + 10 : totalScore);
 
-		await wait(500);
-		if (index < questionNum - 1) setIndex(index + 1);
-		else {
-			navigate(APP_ROUTES.complete);
-		}
-		method.reset();
-		setCorrect(undefined);
+		// await wait(5000);
+		// if (index < questionNum - 1) setIndex(index + 1);
+		// else {
+		// 	navigate(APP_ROUTES.complete);
+		// }
+		// method.reset();
+		// setCorrect(undefined);
 	};
 
 	const questionType = data?.options?.length ? 'quiz' : 'text';
-
 	return (
-		<FormProvider {...method}>
-			<Form onSubmit={onSubmit}>
-				<Box>
-					<QuestionContent question={data} isCorrect={isCorrect} />
-					{questionType === 'quiz' ? (
-						<>
-							<Options values={data.options} questionKey={data.key} />
+		<LayoutGroup>
+			<motion.div layout>
+				<FormProvider {...method}>
+					<Form onSubmit={onSubmit}>
+						<Box>
+							<QuestionContent question={data} isCorrect={isCorrect} />
+							{questionType === 'quiz' ? (
+								<Options
+									values={data.options}
+									questionKey={data.key}
+									isCorrect={isCorrect}
+								/>
+							) : (
+								<InputAnswer />
+							)}
 							<Box style={{ textAlign: 'center' }} mt='4'>
 								<SubmitButton />
 							</Box>
-						</>
-					) : (
-						<InputAnswer />
-					)}
-				</Box>
-			</Form>
-		</FormProvider>
+						</Box>
+					</Form>
+					<QuitButton />
+				</FormProvider>
+			</motion.div>
+			<motion.div layout>
+				<QuestionMoreInfo isDisplay={isCorrect} questionData={data} />
+			</motion.div>
+		</LayoutGroup>
 	);
 };
 

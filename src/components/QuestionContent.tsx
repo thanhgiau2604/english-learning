@@ -29,10 +29,15 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 		);
 	};
 
+	let moreInfo = question?.part_of_speech
+		? `(${question?.part_of_speech})`
+		: '';
+	moreInfo += question?.pronounciation || '';
+
 	return (
 		<Flex gap='4' align='center' justify='center' py='2' px='3'>
 			<Flex align='center' justify='center' className='question'>
-				{question?.content}
+				{`${question?.content} ${moreInfo}`}
 			</Flex>
 			<Flex
 				className='total-score'

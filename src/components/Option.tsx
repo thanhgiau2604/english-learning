@@ -6,6 +6,7 @@ interface OptionProps {
 	value: string;
 	handleSelect: (option: string) => void;
 	questionKey: string;
+	isCorrect?: boolean;
 	selected?: string;
 }
 
@@ -13,6 +14,8 @@ const Option: React.FC<OptionProps> = ({
 	value = '',
 	selected,
 	handleSelect,
+	questionKey,
+	isCorrect,
 }) => {
 	const {
 		formState: { errors },
@@ -20,8 +23,11 @@ const Option: React.FC<OptionProps> = ({
 
 	const cls = classNames({
 		'option-item': true,
-		selected: selected === value,
-		'no-select': selected !== value,
+		selected:
+			(isCorrect === undefined && selected === value) ||
+			(isCorrect === false && value === questionKey),
+		'selected-wrong': isCorrect === false && selected === value,
+		'no-select': isCorrect === undefined && selected !== value,
 		error: !!errors.answer,
 	});
 

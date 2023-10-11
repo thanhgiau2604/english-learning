@@ -4,11 +4,16 @@ import React from 'react';
 import { useFormContext } from 'react-hook-form';
 
 interface OptionsProps {
+	isCorrect?: boolean;
 	values?: string[];
 	questionKey: string;
 }
 
-const Options: React.FC<OptionsProps> = ({ values, questionKey }) => {
+const Options: React.FC<OptionsProps> = ({
+	values,
+	questionKey,
+	isCorrect,
+}) => {
 	const { setValue, getValues, watch, trigger } = useFormContext();
 	if (values?.length !== 4) return <></>;
 
@@ -35,6 +40,7 @@ const Options: React.FC<OptionsProps> = ({ values, questionKey }) => {
 								value={val}
 								handleSelect={handleSelect}
 								questionKey={questionKey}
+								isCorrect={isCorrect}
 							/>
 						</React.Fragment>
 					);

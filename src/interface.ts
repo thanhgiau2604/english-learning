@@ -16,6 +16,7 @@ export interface Setting {
 	already: boolean;
 	timer?: number;
 	selectedCategory?: string;
+	questionNum?: number;
 }
 
 export interface CategoryItem {

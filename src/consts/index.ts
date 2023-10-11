@@ -28,3 +28,9 @@ export const CATEGORY_VARIANTS = {
 export const CATEGORY_ANIMATE = {
 	transition: { type: 'spring', damping: 30, stiffness: 150 },
 };
+
+export const APP_ROUTES = {
+	home: '/',
+	quiz: '/quiz',
+	complete: '/complete',
+};

@@ -1,14 +1,21 @@
 import { Box, Button } from '@radix-ui/themes';
 import Settings from '../components/Settings';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
-import { categoryState, rawDataState, settingState } from '../atoms/app';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import {
+	categoryState,
+	currentIndexState,
+	rawDataState,
+	scoreState,
+	settingState,
+} from '../atoms/app';
 import Papa from 'papaparse';
 import { useEffect, useState } from 'react';
 import LoadingOverlay from 'react-loading-overlay-ts';
 import { CSVRow } from '../interface';
 import { buildCategory } from '../utils';
 import Category from '../components/Category';
+import { APP_ROUTES } from '../consts';
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -17,14 +24,23 @@ const Home = () => {
 	const [category, setCategory] = useRecoilState(categoryState);
 	const [, setRawData] = useRecoilState(rawDataState);
 
+	// reset
+	const resetScore = useResetRecoilState(scoreState);
+	const resetCurrentIndex = useResetRecoilState(currentIndexState);
+	const resetSetting = useResetRecoilState(settingState);
+
 	const handleStart = () => {
 		setSetting({ ...setting, already: true });
-		navigate('/quiz');
+		navigate(APP_ROUTES.quiz);
 	};
 
 	const url = process.env.REACT_APP_CSV_DATA_URL || '';
 
 	useEffect(() => {
+		resetScore();
+		resetCurrentIndex();
+		resetSetting();
+
 		if (!category?.length) {
 			Papa.parse<CSVRow>(url, {
 				download: true,
@@ -58,6 +74,7 @@ const Home = () => {
 					height='9'
 					width='100%'
 					className='home-footer'
+					px='3'
 				>
 					<Button
 						color='green'

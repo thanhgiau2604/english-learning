@@ -15,6 +15,8 @@ import { useRecoilState } from 'recoil';
 import { currentIndexState, scoreState } from '../atoms/app';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { APP_ROUTES } from '../consts';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -49,23 +51,21 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 
 	const method = useForm<FormValues>({ resolver });
 
-	const onSubmit: FormSubmitHandler<FormValues> = submit => {
+	const onSubmit: FormSubmitHandler<FormValues> = async submit => {
 		const answer = submit.data.selected || submit.data.answer;
 		const isCorrect = answer.trim() === data.key;
 		setCorrect(isCorrect);
 
-		setTimeout(() => {
-			setTotalScore(isCorrect ? totalScore + 10 : totalScore);
-		}, 500);
+		await wait(500);
+		setTotalScore(isCorrect ? totalScore + 10 : totalScore);
 
-		setTimeout(() => {
-			if (index < questionNum - 1) setIndex(index + 1);
-			else {
-				navigate('/complete');
-			}
-			method.reset();
-			setCorrect(undefined);
-		}, 1000);
+		await wait(500);
+		if (index < questionNum - 1) setIndex(index + 1);
+		else {
+			navigate(APP_ROUTES.complete);
+		}
+		method.reset();
+		setCorrect(undefined);
 	};
 
 	const questionType = data?.options?.length ? 'quiz' : 'text';

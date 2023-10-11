@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { scoreState, settingState } from '../atoms/app';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { APP_ROUTES } from '../consts';
 
 const CompletePage = () => {
 	const score = useRecoilValue(scoreState);
@@ -11,7 +12,7 @@ const CompletePage = () => {
 
 	useEffect(() => {
 		if (!already) {
-			navigate('/');
+			navigate(APP_ROUTES.home);
 		}
 	}, []);
 

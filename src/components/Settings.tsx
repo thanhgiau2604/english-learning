@@ -4,6 +4,7 @@ import { useRecoilState } from 'recoil';
 import { settingState } from '../atoms/app';
 import { ReactComponent as AlarmIcon } from '../assets/images/alarm.svg';
 import { useDebounce } from '../hooks';
+import { motion } from 'framer-motion';
 
 const Settings = () => {
 	const [setting, setSetting] = useRecoilState(settingState);
@@ -24,6 +25,10 @@ const Settings = () => {
 		setSetting({ ...setting, autoplay: isChecked });
 	};
 
+	const handleChangeMultiChoice = (isOn: boolean) => {
+		setSetting({ ...setting, multichoice: isOn });
+	};
+
 	useEffect(() => {
 		setSetting({ ...setting, timer: timerValue });
 	}, [timerValue]);
@@ -33,7 +38,7 @@ const Settings = () => {
 	}, [qNumValue]);
 
 	return (
-		<Box px='5' pt='4'>
+		<motion.div className='settings' layout='position'>
 			<Text size='4'>
 				<Strong>Settings:</Strong>
 			</Text>
@@ -78,17 +83,25 @@ const Settings = () => {
 				<Box className='autoplay' mt='4'>
 					<Text as='div' size='2'>
 						<Flex gap='2'>
-							<Switch
-								radius='full'
-								onCheckedChange={handleChangeAutoplay}
-								defaultChecked
-							/>
+							<Switch radius='full' onCheckedChange={handleChangeAutoplay} />
 							Autoplay
 						</Flex>
 					</Text>
 				</Box>
+				<Box className='multichoice' mt='4'>
+					<Text as='div' size='2'>
+						<Flex gap='2'>
+							<Switch
+								radius='full'
+								onCheckedChange={handleChangeMultiChoice}
+								defaultChecked
+							/>
+							Multichoice
+						</Flex>
+					</Text>
+				</Box>
 			</Box>
-		</Box>
+		</motion.div>
 	);
 };
 

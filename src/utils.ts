@@ -1,4 +1,3 @@
-import { title } from 'process';
 import { CSVRow, CategoryItem, QuestionItem } from './interface';
 
 export function shuffle<T>(array: Array<T>): Array<T> {

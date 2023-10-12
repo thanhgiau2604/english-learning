@@ -16,6 +16,7 @@ import { CSVRow } from '../interface';
 import { buildCategory } from '../utils';
 import Category from '../components/Category';
 import { APP_ROUTES } from '../consts';
+import { LayoutGroup } from 'framer-motion';
 
 const Home = () => {
 	const navigate = useNavigate();
@@ -66,8 +67,10 @@ const Home = () => {
 	return (
 		<LoadingOverlay active={loadingData} spinner>
 			<Box style={{ height: '100vh' }}>
-				<Category />
-				<Settings />
+				<LayoutGroup>
+					<Category />
+					<Settings />
+				</LayoutGroup>
 				<Box
 					position='fixed'
 					bottom='0'

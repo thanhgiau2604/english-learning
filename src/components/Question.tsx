@@ -50,7 +50,7 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
-	const { autoplay } = useRecoilValue(settingState);
+	const { autoplay, multichoice } = useRecoilValue(settingState);
 	const [isCorrect, setCorrect] = useState<boolean>();
 
 	const method = useForm<FormValues>({ resolver });
@@ -86,7 +86,7 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	};
 
 	const isSubmitted = isCorrect !== undefined || method.formState.isSubmitting;
-	const questionType = data?.options?.length ? 'quiz' : 'text';
+	const questionType = data?.options?.length && multichoice ? 'quiz' : 'text';
 
 	return (
 		<AnimatePresence>
@@ -114,7 +114,11 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 					</FormProvider>
 				</motion.div>
 				<motion.div layout='position'>
-					<QuestionMoreInfo isDisplay={isCorrect} questionData={data} />
+					<QuestionMoreInfo
+						isDisplay={isCorrect}
+						questionData={data}
+						questionType={questionType}
+					/>
 				</motion.div>
 			</LayoutGroup>
 		</AnimatePresence>

@@ -18,6 +18,7 @@ export interface Setting {
 	selectedCategory?: string;
 	questionNum?: number;
 	autoplay: boolean;
+	multichoice: boolean;
 }
 
 export interface CategoryItem {

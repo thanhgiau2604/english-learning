@@ -12,9 +12,8 @@ const Category = () => {
 	const handleSelectCategory = (category: CategoryItem) => {
 		setSetting({ ...setting, selectedCategory: category.title });
 	};
-
 	return (
-		<Box className='category-list'>
+		<motion.div className='category-list' layout='position'>
 			<Text size='4'>
 				<Strong>Category List:</Strong>
 			</Text>
@@ -39,7 +38,7 @@ const Category = () => {
 				})}
 				{!categories.length && <Box>No category exist</Box>}
 			</Flex>
-		</Box>
+		</motion.div>
 	);
 };
 

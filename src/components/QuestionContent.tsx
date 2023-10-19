@@ -43,7 +43,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 
 		return (
 			<React.Fragment>
-				{`${question?.content} `}
+				<p className='break-line'>{`${question?.content} `}</p>
 				{question?.part_of_speech && <Em>({question?.part_of_speech})</Em>}
 				{question?.pronounciation && <Em>{question?.pronounciation}</Em>}
 			</React.Fragment>

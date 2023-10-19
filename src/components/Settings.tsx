@@ -29,6 +29,10 @@ const Settings = () => {
 		setSetting({ ...setting, multichoice: isOn });
 	};
 
+	const handleSwitchToExplanation = (isOn: boolean) => {
+		setSetting({ ...setting, useExplanation: isOn });
+	};
+
 	useEffect(() => {
 		setSetting({ ...setting, timer: timerValue });
 	}, [timerValue]);
@@ -97,6 +101,17 @@ const Settings = () => {
 								defaultChecked
 							/>
 							Multichoice
+						</Flex>
+					</Text>
+				</Box>
+				<Box className='use-explanation' mt='4'>
+					<Text as='div' size='2'>
+						<Flex gap='2'>
+							<Switch
+								radius='full'
+								onCheckedChange={handleSwitchToExplanation}
+							/>
+							use exaplanation to make question
 						</Flex>
 					</Text>
 				</Box>

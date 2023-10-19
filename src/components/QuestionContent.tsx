@@ -1,9 +1,10 @@
 import { Em, Flex } from '@radix-ui/themes';
 import { useRecoilValue } from 'recoil';
-import { scoreState } from '../atoms/app';
+import { scoreState, settingState } from '../atoms/app';
 import { CORRECT_POINT_ANIMATE } from '../consts';
 import { motion } from 'framer-motion';
 import { QuestionItem } from '../interface';
+import React from 'react';
 
 interface QuestionContentProps {
 	question: QuestionItem;
@@ -15,6 +16,7 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 	isCorrect,
 }) => {
 	const score = useRecoilValue(scoreState);
+	const { useExplanation } = useRecoilValue(settingState);
 
 	const renderScoreResult = (): JSX.Element => {
 		if (isCorrect === undefined) return <></>;
@@ -29,12 +31,29 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 		);
 	};
 
+	const renderContent = (): JSX.Element => {
+		if (useExplanation && question?.explanation) {
+			return (
+				<React.Fragment>
+					{`${question.explanation} `}
+					{question?.part_of_speech && <Em>({question?.part_of_speech})</Em>}
+				</React.Fragment>
+			);
+		}
+
+		return (
+			<React.Fragment>
+				{`${question?.content} `}
+				{question?.part_of_speech && <Em>({question?.part_of_speech})</Em>}
+				{question?.pronounciation && <Em>{question?.pronounciation}</Em>}
+			</React.Fragment>
+		);
+	};
+
 	return (
 		<Flex gap='4' align='center' justify='center' py='2' px='3' wrap='wrap'>
 			<Flex align='center' justify='center' className='question'>
-				{`${question?.content}`}
-				{question?.part_of_speech && <Em>({question?.part_of_speech})</Em>}
-				{question?.pronounciation && <Em>{question?.pronounciation}</Em>}
+				{renderContent()}
 			</Flex>
 			<Flex
 				className='total-score'

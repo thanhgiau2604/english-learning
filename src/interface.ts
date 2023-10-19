@@ -19,6 +19,7 @@ export interface Setting {
 	questionNum?: number;
 	autoplay: boolean;
 	multichoice: boolean;
+	useExplanation: boolean;
 }
 
 export interface CategoryItem {
@@ -30,11 +31,10 @@ export interface CSVRow {
 	question: string;
 	key: string;
 	category: string;
-	option1?: string;
-	option2?: string;
-	option3?: string;
 	explanation?: string;
 	example?: string;
 	pronounciation?: string;
 	part_of_speech?: string;
 }
+
+export type QuestionType = 'quiz' | 'quiz_reverse' | 'input' | 'input_reverse';

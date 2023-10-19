@@ -1,5 +1,4 @@
 import { Box, Button } from '@radix-ui/themes';
-import React from 'react';
 
 interface NextButtonProps {
 	handleClick: () => void;

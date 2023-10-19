@@ -1,23 +1,30 @@
-import { Box, Container } from '@radix-ui/themes';
+import { Box } from '@radix-ui/themes';
 import Question from '../components/Question';
 import { useRecoilValue } from 'recoil';
 import { currentIndexState, rawDataState, settingState } from '../atoms/app';
 import { useEffect, useState } from 'react';
-import { buildQuestionData, shuffle } from '../utils';
+import {
+	buildQuestionData,
+	getFullQuestionData,
+	getQuestionType,
+	shuffle,
+} from '../utils';
 import Timer from '../components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { QuestionItem } from '../interface';
 import { APP_ROUTES } from '../consts';
 import QuitButton from '../components/QuitButton';
+import { useTimer } from '../hooks/useTimer';
 
 const QuizPage = () => {
 	const [questions, setQuestions] = useState<QuestionItem[]>([]);
 	const index = useRecoilValue(currentIndexState);
 	const { timer, questionNum } = useRecoilValue(settingState);
-	const [seconds, setSeconds] = useState<number>();
 	const rawData = useRecoilValue(rawDataState);
-	const { selectedCategory } = useRecoilValue(settingState);
+	const setting = useRecoilValue(settingState);
 	const navigate = useNavigate();
+	const { seconds } = useTimer(timer);
+	const { selectedCategory } = setting;
 
 	useEffect(() => {
 		if (!selectedCategory) {
@@ -36,25 +43,18 @@ const QuizPage = () => {
 		setQuestions(questionWithNum);
 	}, [selectedCategory, questionNum]);
 
-	useEffect(() => {
-		if (!timer) return;
-		let seconds = timer * 60;
-		const timeout = setInterval(() => {
-			if (seconds === 0) {
-				clearInterval(timeout);
-				navigate(APP_ROUTES.complete);
-			}
-			seconds -= 1;
-			setSeconds(seconds);
-		}, 1000);
-		return () => clearInterval(timeout);
-	}, [timer]);
+	const questionType = getQuestionType(questions[index], setting);
+	const questionData = getFullQuestionData(
+		rawData,
+		questions[index],
+		questionType
+	);
 
 	return (
 		<Box className='center-scr'>
 			<Box py='5' px='5' position='relative' className='quiz-container'>
 				<Timer seconds={seconds} />
-				<Question data={questions[index]} questionNum={questions.length} />
+				<Question data={questionData} questionNum={questions.length} />
 				<QuitButton />
 			</Box>
 		</Box>

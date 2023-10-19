@@ -11,7 +11,7 @@ const Timer: React.FC<TimerProps> = ({ seconds }) => {
 	return (
 		<Box
 			position='fixed'
-			style={{ top: '100px', transform: 'translateX(-50%)' }}
+			style={{ top: '20px', transform: 'translateX(-50%)' }}
 			left='50%'
 		>
 			<Flex gap='1' align='center' justify='center'>

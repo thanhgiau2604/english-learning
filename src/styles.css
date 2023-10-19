@@ -37,6 +37,14 @@ body {
 /* #endregion reset css */
 
 /* #region other */
+strong {
+	font-weight: bold;
+}
+
+.break-line {
+	white-space: break-spaces;
+}
+
 .center-scr {
 	min-height: 100vh;
 	display: flex;
@@ -200,7 +208,13 @@ body {
 .next-button {
 	width: 100%;
 	text-align: center;
-	margin-top: 30px;
+	margin-top: 20px;
+}
+
+.skip-button {
+	width: 100%;
+	text-align: center;
+	margin-top: 20px;
 }
 
 /* #endregion button */

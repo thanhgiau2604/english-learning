@@ -17,9 +17,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuestionMoreInfo from './MoreInfo';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
-import { wait } from '../utils';
+import { checkAnswer, getQuestionType, quizType, wait } from '../utils';
 import NextButton from './NextButton';
 import { APP_ROUTES } from '../consts';
+import SkipButton from './SkipButton';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -27,22 +28,20 @@ interface QuestionProps {
 }
 
 export interface FormValues {
-	selected: string;
 	answer: string;
 }
 
 const resolver: Resolver<FormValues> = async values => {
 	return {
 		values,
-		errors:
-			!values.answer && !values.selected
-				? {
-						answer: {
-							type: 'required',
-							message: 'This is required.',
-						},
-				  }
-				: {},
+		errors: !values.answer
+			? {
+					answer: {
+						type: 'required',
+						message: 'This is required.',
+					},
+			  }
+			: {},
 	};
 };
 
@@ -50,7 +49,9 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
-	const { autoplay, multichoice } = useRecoilValue(settingState);
+	const setting = useRecoilValue(settingState);
+	const { autoplay } = setting;
+	const questionType = getQuestionType(data, setting);
 	const [isCorrect, setCorrect] = useState<boolean>();
 
 	const method = useForm<FormValues>({ resolver });
@@ -70,8 +71,9 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	};
 
 	const onSubmit: FormSubmitHandler<FormValues> = async submit => {
-		const answer = submit.data.selected || submit.data.answer;
-		const isCorrect = answer.trim() === data.key;
+		const answer = submit.data.answer.trim();
+		const isCorrect = checkAnswer(answer, data, questionType);
+
 		setCorrect(isCorrect);
 
 		await wait(500);
@@ -85,8 +87,12 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 		}
 	};
 
+	const skipQuestion = () => {
+		method.setValue('answer', ' ');
+		method.handleSubmit(() => console.log());
+	};
+
 	const isSubmitted = isCorrect !== undefined || method.formState.isSubmitting;
-	const questionType = data?.options?.length && multichoice ? 'quiz' : 'text';
 
 	return (
 		<AnimatePresence>
@@ -96,7 +102,7 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 						<Form onSubmit={onSubmit}>
 							<Box>
 								<QuestionContent question={data} isCorrect={isCorrect} />
-								{questionType === 'quiz' ? (
+								{quizType(questionType) ? (
 									<Options
 										values={data.options}
 										questionKey={data.key}
@@ -108,6 +114,10 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 								<Box style={{ textAlign: 'center' }} mt='4'>
 									<SubmitButton isSubmitted={isSubmitted} />
 									{!autoplay && <NextButton handleClick={nextQuestion} />}
+									<SkipButton
+										handleClick={skipQuestion}
+										isSubmitted={isSubmitted}
+									/>
 								</Box>
 							</Box>
 						</Form>

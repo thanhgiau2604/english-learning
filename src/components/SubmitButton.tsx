@@ -1,6 +1,4 @@
 import { Button } from '@radix-ui/themes';
-import { useFormContext } from 'react-hook-form';
-import { FormValues } from './Question';
 
 interface Props {
 	isSubmitted: boolean;

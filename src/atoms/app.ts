@@ -30,5 +30,6 @@ export const settingState = atom<Setting>({
 		questionNum: undefined,
 		autoplay: false,
 		multichoice: true,
+		useExplanation: false,
 	},
 });

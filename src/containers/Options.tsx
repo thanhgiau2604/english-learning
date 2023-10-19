@@ -18,11 +18,11 @@ const Options: React.FC<OptionsProps> = ({
 	if (!values?.length) return <></>;
 
 	const handleSelect = (option: string) => {
-		setValue('selected', option);
+		setValue('answer', option);
 		trigger();
 	};
 
-	watch('selected');
+	watch('answer');
 
 	return (
 		<Box mt='8' mx='2'>
@@ -31,7 +31,7 @@ const Options: React.FC<OptionsProps> = ({
 					return (
 						<React.Fragment key={val + index.toString()}>
 							<Option
-								selected={getValues('selected')}
+								selected={getValues('answer')}
 								value={val}
 								handleSelect={handleSelect}
 								questionKey={questionKey}

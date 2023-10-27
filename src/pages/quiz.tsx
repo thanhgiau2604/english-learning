@@ -13,7 +13,7 @@ import Timer from '../components/Timer';
 import { useNavigate } from 'react-router-dom';
 import { QuestionItem } from '../interface';
 import { APP_ROUTES } from '../consts';
-import QuitButton from '../components/QuitButton';
+import QuitButton from '../components/buttons/QuitButton';
 import { useTimer } from '../hooks/useTimer';
 
 const QuizPage = () => {

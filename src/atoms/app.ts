@@ -21,6 +21,11 @@ export const rawDataState = atom<CSVRow[]>({
 	default: [],
 });
 
+export const showOptions = atom<boolean>({
+	key: 'shiw_options',
+	default: false,
+});
+
 export const settingState = atom<Setting>({
 	key: 'settings',
 	default: {

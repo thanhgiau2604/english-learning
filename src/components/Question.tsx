@@ -2,7 +2,7 @@ import { Box } from '@radix-ui/themes';
 import QuestionContent from './QuestionContent';
 import Options from '../containers/Options';
 import InputAnswer from './InputAnswer';
-import SubmitButton from './SubmitButton';
+import SubmitButton from './buttons/SubmitButton';
 import {
 	Form,
 	FormProvider,
@@ -12,15 +12,20 @@ import {
 } from 'react-hook-form';
 import { QuestionItem } from '../interface';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentIndexState, scoreState, settingState } from '../atoms/app';
+import {
+	currentIndexState,
+	scoreState,
+	settingState,
+	showOptions,
+} from '../atoms/app';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import QuestionMoreInfo from './MoreInfo';
 import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
 import { checkAnswer, getQuestionType, quizType, wait } from '../utils';
-import NextButton from './NextButton';
+import NextButton from './buttons/NextButton';
 import { APP_ROUTES } from '../consts';
-import SkipButton from './SkipButton';
+import SkipButton from './buttons/SkipButton';
 
 interface QuestionProps {
 	data: QuestionItem;
@@ -49,6 +54,7 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 	const navigate = useNavigate();
 	const [index, setIndex] = useRecoilState(currentIndexState);
 	const [totalScore, setTotalScore] = useRecoilState(scoreState);
+	const [optionHint, setOptionHint] = useRecoilState(showOptions);
 	const setting = useRecoilValue(settingState);
 	const { autoplay } = setting;
 	const questionType = getQuestionType(data, setting);
@@ -58,6 +64,7 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 
 	const resetQuestion = () => {
 		setCorrect(undefined);
+		setOptionHint(false);
 		method.reset();
 	};
 
@@ -77,7 +84,8 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 		setCorrect(isCorrect);
 
 		await wait(500);
-		setTotalScore(isCorrect ? totalScore + 10 : totalScore);
+		const scoreAdd = optionHint ? 5 : 10;
+		setTotalScore(isCorrect ? totalScore + scoreAdd : totalScore);
 
 		if (autoplay) {
 			await wait(400);
@@ -102,14 +110,14 @@ const Question: React.FC<QuestionProps> = ({ data, questionNum }) => {
 						<Form onSubmit={onSubmit}>
 							<Box>
 								<QuestionContent question={data} isCorrect={isCorrect} />
-								{quizType(questionType) ? (
+								{quizType(questionType) || optionHint ? (
 									<Options
 										values={data.options}
 										questionKey={data.key}
 										isCorrect={isCorrect}
 									/>
 								) : (
-									<InputAnswer />
+									<InputAnswer isSubmitted={isSubmitted} />
 								)}
 								<Box style={{ textAlign: 'center' }} mt='4'>
 									<SubmitButton isSubmitted={isSubmitted} />

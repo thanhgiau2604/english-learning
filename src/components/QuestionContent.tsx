@@ -1,6 +1,6 @@
 import { Em, Flex } from '@radix-ui/themes';
-import { useRecoilValue } from 'recoil';
-import { scoreState, settingState } from '../atoms/app';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { scoreState, settingState, showOptions } from '../atoms/app';
 import { CORRECT_POINT_ANIMATE } from '../consts';
 import { motion } from 'framer-motion';
 import { QuestionItem } from '../interface';
@@ -17,16 +17,17 @@ const QuestionContent: React.FC<QuestionContentProps> = ({
 }) => {
 	const score = useRecoilValue(scoreState);
 	const { useExplanation } = useRecoilValue(settingState);
+	const [optionHint] = useRecoilState(showOptions);
 
 	const renderScoreResult = (): JSX.Element => {
 		if (isCorrect === undefined) return <></>;
-
+		const scoreAdd = optionHint ? '+5' : '+10';
 		return (
 			<motion.div
 				{...CORRECT_POINT_ANIMATE}
 				className={`score ${isCorrect ? 'score-correct' : 'score-wrong'}`}
 			>
-				{isCorrect ? `+10` : `+0`}
+				{isCorrect ? scoreAdd : `+0`}
 			</motion.div>
 		);
 	};

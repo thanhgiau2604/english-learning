@@ -36,7 +36,8 @@ const QuestionMoreInfo = ({
 					Key
 				</Badge>
 				<Box mt='1'>
-					{questionData.content}: {questionData.key}
+					{questionData.content}: {questionData?.pronounciation + '  '}{' '}
+					{questionData.key}
 				</Box>
 			</Box>
 			{example && (

@@ -1,6 +1,6 @@
 import { Button, Box } from '@radix-ui/themes';
 import { useNavigate } from 'react-router-dom';
-import { APP_ROUTES } from '../consts';
+import { APP_ROUTES } from '../../consts';
 
 const QuitButton = () => {
 	const navigate = useNavigate();
